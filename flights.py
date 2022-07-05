@@ -1,6 +1,36 @@
 import requests
 import os
-API_KEY = '83b7473de92bc4b9cc05065ed7daf92d'
+
+API_KEY = os.environ.get('AVIATIONSTACK_API_KEY')
+
+def auth_amadeus():
+  AUTH_URL = 'https://test.api.amadeus.com/v1/security/oauth2/token'
+  auth_response = requests.post(AUTH_URL, {
+  'grant_type': 'client_credentials',
+  'client_id': os.environ.get('AMADEUS_CLIENT_ID'),
+  'client_secret': os.environ.get('AMADEUS_CLIENT_SECRET')
+  })
+  auth_response_data = auth_response.json()
+  access_token = auth_response_data['access_token']
+  headers = {'Authorization': 'Bearer {token}'.format(token=access_token)}
+  return headers
+
+
+#FUNCTION GET_REQUEST, RETURN JSON RESPONSE
+def get_request(headers):
+  params = {'subType': ['AIRPORT'],
+    'keyword': 'Cincinnati'
+  }
+  BASE_URL = 'https://test.api.amadeus.com/v1/reference-data/locations?subType=AIRPORT&keyword=' + 'cincinnati' + '&view=LIGHT'
+  r = requests.get(BASE_URL, headers = headers)
+  return(r.json())
+  
+print(get_request(auth_amadeus()))
+
+
+
+
+
 def get_city_iata(API_KEY):
   #dep_iata, arr_iata
   params = {'access_key': API_KEY,
@@ -31,11 +61,11 @@ def get_flights_request(API_KEY):
   return(r.json())
 
 
-result = get_flights_request(API_KEY)
-data = result['data']
-for flight in data:
-  print(flight)
-  print("\n")
+# result = get_flights_request(API_KEY)
+# data = result['data']
+# for flight in data:
+#   print(flight)
+#   print("\n")
 
 
 
