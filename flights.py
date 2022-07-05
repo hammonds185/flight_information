@@ -17,15 +17,15 @@ def auth_amadeus():
 
 
 #FUNCTION GET_REQUEST, RETURN JSON RESPONSE
-def get_request(headers):
+def get_request(headers, city):
   params = {'subType': ['AIRPORT'],
     'keyword': 'Cincinnati'
   }
-  BASE_URL = 'https://test.api.amadeus.com/v1/reference-data/locations?subType=AIRPORT&keyword=' + 'cincinnati' + '&view=LIGHT'
+  BASE_URL = 'https://test.api.amadeus.com/v1/reference-data/locations?subType=AIRPORT&keyword=' + city + '&view=LIGHT'
   r = requests.get(BASE_URL, headers = headers)
   return(r.json())
   
-print(get_request(auth_amadeus()))
+#print(get_request(auth_amadeus()))
 
 
 
@@ -66,6 +66,43 @@ def get_flights_request(API_KEY):
 # for flight in data:
 #   print(flight)
 #   print("\n")
+
+#This is where calls start
+print("Enter departure city: ")
+#change this to user input
+departure_city = input()
+head = auth_amadeus()
+depart_airports = get_request(head, departure_city)
+
+# have user choose an airport
+print("Choose an airport(Type the number beside your choice): ")
+
+# initialize variables
+name = ''
+detailed_name = ''
+iataCode = ''
+iata_list = []
+numbering = 1
+
+# Print list of airports for user and store info
+for airport in depart_airports['data']:
+  name = airport['name']
+  detailed_name = airport['detailedName']
+  iataCode = airport['iataCode']
+  print(str(numbering) + '. ', name, detailed_name, '('+  iataCode +')')
+  iata_list.append(iataCode)
+  numbering += 1
+
+#get the choice
+departure_airport_choice = input()
+departure_airport_iata = ''
+try:
+  departure_airport_iata = iata_list[int(departure_airport_choice) - 1]
+except:
+  print("Your choice is invalid")
+
+#prints the iata to confirm
+print(departure_airport_iata)
 
 
 
