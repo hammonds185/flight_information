@@ -31,25 +31,24 @@ def get_request(headers, city):
 
 
 
-def get_city_iata(API_KEY):
-  #dep_iata, arr_iata
-  params = {'access_key': API_KEY,
-  'limit': '1',
-  }
-  CITY_URL = 'http://api.aviationstack.com/v1/cities'
-  r = requests.get(CITY_URL, params)
-  return(r.json())
-def get_flight_info(API_KEY):
-  FLIGHT_URL= 'http://api.aviationstack.com/v1/flights/'
-  params = {'access_key': API_KEY,
-  'flight_date': '2022-07-3',
-  }
-  r = requests.get(FLIGHT_URL, params)
-  return(r.json())
+# def get_city_iata(API_KEY):
+#   #dep_iata, arr_iata
+#   params = {'access_key': API_KEY,
+#   'limit': '1',
+#   }
+#   CITY_URL = 'http://api.aviationstack.com/v1/cities'
+#   r = requests.get(CITY_URL, params)
+#   return(r.json())
+# def get_flight_info(API_KEY):
+#   FLIGHT_URL= 'http://api.aviationstack.com/v1/flights/'
+#   params = {'access_key': API_KEY,
+#   'flight_date': '2022-07-3',
+#   }
+#   r = requests.get(FLIGHT_URL, params)
+#   return(r.json())
 
 #FUNCTION GET_REQUEST, RETURN JSON RESPONSE
-def get_flights_request(API_KEY):
-  #API_KEY = '83b7473de92bc4b9cc05065ed7daf92d'
+def get_flights_request(API_KEY, dep_iata, arr_iata):
   params = {'access_key': API_KEY,
     'limit': '10',
     'flight_status': 'scheduled',
@@ -101,8 +100,40 @@ try:
 except:
   print("Your choice is invalid")
 
-#prints the iata to confirm
+#prints the iata to confirm!!!!!
 print(departure_airport_iata)
 
+# now we must get the destination airport
+print("Enter a destination city: ")
+#change this to user input
+arrival_city = input()
+head = auth_amadeus()
+arrival_airports = get_request(head, arrival_city)
 
+print("here are flights from " + departure_city + " to " + arrival_city + ": ")
+
+# initialize variables
+name = ''
+detailed_name = ''
+iataCode = ''
+iata_list = []
+#numbering = 1
+
+# Print list of airports for user and store info
+for airport in arrival_airports['data']:
+  name = airport['name']
+  detailed_name = airport['detailedName']
+  iataCode = airport['iataCode']
+  #instead of printing the info we must use the iatas as parameters for aviationstack
+  # I printed name to see what airport is going into the aviationstack request
+  print(name)
+  # the request
+  available_flights = get_flights_request(API_KEY, departure_airport_iata, iataCode)
+  # parsing data to get each fight date, departure place, and arrival place
+  data = available_flights['data']
+  for flight in data:
+    print(flight['flight_date'])
+    print(flight['departure']['airport'])
+    print(flight['arrival']['airport'])
+    print("\n")
 
