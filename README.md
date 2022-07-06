@@ -3,6 +3,9 @@
     * Libraries to Install:
         * os 
         * requests
+    * APIs used:
+        * WeatherAPI, API_KEY needed 
+        * Amadeus API, API_KEY needed 
 * **How to run your code**
     * User will be prompted to enter ____
 * **An overview of how your code works**
