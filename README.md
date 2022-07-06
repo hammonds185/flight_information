@@ -1,6 +1,6 @@
 # flight_information
-* **Setup instructions** (e.g. libraries to install, environment variables, etc.)
-    *Libraries to Install:
+* **Setup instructions**
+    * Libraries to Install:
         * os 
         * requests
 * **How to run your code**
