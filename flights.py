@@ -181,3 +181,5 @@ for key in day2_forecast_info['day']:
     arrival_forecast[key] = day2_forecast_info['day']["condition"]["text"]
   arrival_forecast[key] = day2_forecast_info['day'][key]
   print(key, ":", arrival_forecast[key])
+
+  
