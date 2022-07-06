@@ -1,6 +1,7 @@
 import requests
 import os
 
+
 API_KEY = os.environ.get('AVIATIONSTACK_API_KEY')
 
 def auth_amadeus():
@@ -19,7 +20,7 @@ def auth_amadeus():
 #FUNCTION GET_REQUEST, RETURN JSON RESPONSE
 def get_request(headers, city):
   params = {'subType': ['AIRPORT'],
-    'keyword': 'Cincinnati'
+    'keyword': str(city)
   }
   BASE_URL = 'https://test.api.amadeus.com/v1/reference-data/locations?subType=AIRPORT&keyword=' + city + '&view=LIGHT'
   r = requests.get(BASE_URL, headers = headers)
@@ -52,10 +53,23 @@ def get_flights_request(API_KEY, dep_iata, arr_iata):
   params = {'access_key': API_KEY,
     'limit': '10',
     'flight_status': 'scheduled',
-    'dep_iata': 'CVG',
-    'arr_iata': 'MIA'
+    'dep_iata': str(dep_iata),
+    'arr_iata': str(arr_iata)
   }
   BASE_URL = 'http://api.aviationstack.com/v1/flights'
+  r = requests.get(BASE_URL, params)
+  return(r.json())
+
+#FUNTION GET_FORECAST, RETURN JSON RESPONSE
+def get_forecast(city):
+  params = {
+    'key': os.environ.get('WEATHERAPI_API_KEY'),
+    'q': str(city),
+    'days': '1',
+    'aqi': "yes",
+    'alerts': "yes"
+  }
+  BASE_URL = 'https://api.weatherapi.com/v1/forecast.json?'
   r = requests.get(BASE_URL, params)
   return(r.json())
 
@@ -119,7 +133,8 @@ iataCode = ''
 iata_list = []
 #numbering = 1
 
-# Print list of airports for user and store info
+#Print list of airports for user and store info
+#start here
 for airport in arrival_airports['data']:
   name = airport['name']
   detailed_name = airport['detailedName']
@@ -137,3 +152,32 @@ for airport in arrival_airports['data']:
     print(flight['arrival']['airport'])
     print("\n")
 
+
+# Collect and display weather info for departure and arrival city 
+# Variables for departure weather 
+departure_forecast_data = get_forecast(departure_city)
+#holds the weather information in a dictionary in case we want to 
+#include this information in the database 
+departure_forecast = {}
+day_forecast_info = departure_forecast_data["forecast"]["forecastday"][0]
+
+print("This is the weather for departure city: " , departure_city)
+print("date : " + day_forecast_info['date'])
+for key in day_forecast_info['day']:
+  if key == "condition":
+    departure_forecast[key] = day_forecast_info['day']["condition"]["text"]
+  departure_forecast[key] = day_forecast_info['day'][key]
+  print(key, ":", departure_forecast[key])
+
+# Variables for arrival weather 
+arrival_forecast_data = get_forecast(arrival_city)
+arrival_forecast = {}
+day2_forecast_info = arrival_forecast_data["forecast"]["forecastday"][0]
+
+print("This is the weather for arrival city: " , arrival_city)
+print("date : " + day2_forecast_info['date'])
+for key in day2_forecast_info['day']:
+  if key == "condition":
+    arrival_forecast[key] = day2_forecast_info['day']["condition"]["text"]
+  arrival_forecast[key] = day2_forecast_info['day'][key]
+  print(key, ":", arrival_forecast[key])
