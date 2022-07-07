@@ -101,7 +101,12 @@ def get_flights_request(headers, departure_airport_iata, arrival_airport_iata, d
 
 def print_routes(flights_response, flights_list):
     # parse
-    available_routes = flights_response['data']
+    try:
+      available_routes = flights_response['data']
+    except:
+        print("There are no available flights. Please start again.")
+        sys.exit(1)
+
     # create list of options
     count = 1
     for route in available_routes:
