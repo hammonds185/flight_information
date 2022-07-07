@@ -75,12 +75,9 @@ def get_flights_request(headers, departure_airport_iata, arrival_airport_iata):
                                     "originLocationCode": "CVG",
                                     "destinationLocationCode": "LAX",
                                     "departureDateTime": {"date": "2022-07-08",
-                                                          "time": "21:15:00"
-                                                         }
-                                   }],
+                                                          "time": "21:15:00"}}],
             "travelers": [{"id": "1", "travelerType": "ADULT"}],
-            "sources": ["GDS"]
-          }
+            "sources": ["GDS"]}
     auth_response = requests.post(BASE_URL, headers=headers, json=data)
     auth_response_data = auth_response.json()
     return(auth_response_data)
@@ -129,10 +126,10 @@ departure_airport_choice = input()
 departure_airport_iata = ''
 departure_airport_name = ''
 try:
-  departure_airport_iata = depart_iata_list[int(departure_airport_choice) - 1]
-  departure_airport_name = depart_name_list[int(departure_airport_choice) - 1]
+    departure_airport_iata = depart_iata_list[int(departure_airport_choice) - 1]
+    departure_airport_name = depart_name_list[int(departure_airport_choice) - 1]
 except:
-  print("Your choice is invalid")
+    print("Your choice is invalid")
 
 # prints the iata to confirm!!!!!
 print(departure_airport_iata)
@@ -238,7 +235,7 @@ iata_list = []
 
 def get_forecast(city):
   params = {
-    #'key': os.environ.get('WEATHERAPI_API_KEY'),
+    # 'key': os.environ.get('WEATHERAPI_API_KEY'),
     'key': os.environ.get('WEATHERAPI_API_KEY'),
     'q': str(city),
     'days': '1',
@@ -251,7 +248,7 @@ def get_forecast(city):
 
 
 # Collect and display weather info for departure and arrival city
-# Variables for departure weather 
+# Variables for departure weather
 departure_forecast_data = get_forecast(departure_city)
 # holds the weather information in a dictionary in case we want to 
 # include this information in the database 
