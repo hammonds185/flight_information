@@ -11,7 +11,8 @@ API_KEY = os.environ.get('AVIATIONSTACK_API_KEY')
 
 def auth_amadeus():
     AUTH_URL = 'https://test.api.amadeus.com/v1/security/oauth2/token'
-    auth_response = requests.post(AUTH_URL, {'grant_type': 'client_credentials',
+    auth_response = requests.post(AUTH_URL, {
+                                             'grant_type': 'client_credentials',
                                              'client_id': os.environ.get('AMADEUS_CLIENT_ID'),
                                              'client_secret': os.environ.get('AMADEUS_CLIENT_SECRET')}
                                   )
@@ -154,10 +155,10 @@ arrival_airport_choice = input()
 arrival_airport_iata = ''
 arrival_airport_name = ''
 try:
-  arrival_airport_iata = arrive_iata_list[int(arrival_airport_choice) - 1]
-  arrival_airport_name = arrive_name_list[int(arrival_airport_choice) - 1]
+    arrival_airport_iata = arrive_iata_list[int(arrival_airport_choice) - 1]
+    arrival_airport_name = arrive_name_list[int(arrival_airport_choice) - 1]
 except:
-  print("Your choice is invalid")
+    print("Your choice is invalid")
 
 # prints the iata to confirm!!!!!
 print(arrival_airport_iata)
@@ -234,24 +235,23 @@ iata_list = []
 
 
 def get_forecast(city):
-  params = {
-    # 'key': os.environ.get('WEATHERAPI_API_KEY'),
-    'key': os.environ.get('WEATHERAPI_API_KEY'),
-    'q': str(city),
-    'days': '1',
-    'aqi': "yes",
-    'alerts': "yes"
-  }
-  BASE_URL = 'https://api.weatherapi.com/v1/forecast.json?'
-  r = requests.get(BASE_URL, params)
-  return(r.json())
+    params = {
+        # 'key': os.environ.get('WEATHERAPI_API_KEY'),
+        'key': os.environ.get('WEATHERAPI_API_KEY'),
+        'q': str(city),
+        'days': '1',
+        'aqi': "yes",
+        'alerts': "yes"}
+    BASE_URL = 'https://api.weatherapi.com/v1/forecast.json?'
+    r = requests.get(BASE_URL, params)
+    return(r.json())
 
 
 # Collect and display weather info for departure and arrival city
 # Variables for departure weather
 departure_forecast_data = get_forecast(departure_city)
-# holds the weather information in a dictionary in case we want to 
-# include this information in the database 
+# holds the weather information in a dictionary in case we want to
+# include this information in the database
 
 
 departure_forecast_dict = {"temp": [], "air_condition": [], "other_conditions": []}
