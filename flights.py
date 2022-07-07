@@ -135,22 +135,22 @@ iata_list = []
 
 #Print list of airports for user and store info
 #start here
-for airport in arrival_airports['data']:
-  name = airport['name']
-  detailed_name = airport['detailedName']
-  iataCode = airport['iataCode']
-  #instead of printing the info we must use the iatas as parameters for aviationstack
-  # I printed name to see what airport is going into the aviationstack request
-  print(name)
-  # the request
-  available_flights = get_flights_request(API_KEY, departure_airport_iata, iataCode)
-  # parsing data to get each fight date, departure place, and arrival place
-  data = available_flights['data']
-  for flight in data:
-    print(flight['flight_date'])
-    print(flight['departure']['airport'])
-    print(flight['arrival']['airport'])
-    print("\n")
+# for airport in arrival_airports['data']:
+#   name = airport['name']
+#   detailed_name = airport['detailedName']
+#   iataCode = airport['iataCode']
+#   #instead of printing the info we must use the iatas as parameters for aviationstack
+#   # I printed name to see what airport is going into the aviationstack request
+#   print(name)
+#   # the request
+#   available_flights = get_flights_request(API_KEY, departure_airport_iata, iataCode)
+#   # parsing data to get each fight date, departure place, and arrival place
+#   data = available_flights['data']
+#   for flight in data:
+#     print(flight['flight_date'])
+#     print(flight['departure']['airport'])
+#     print(flight['arrival']['airport'])
+#     print("\n")
 
 
 # Collect and display weather info for departure and arrival city 
