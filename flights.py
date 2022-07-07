@@ -6,6 +6,7 @@ import sys
 import datetime
 
 
+
 API_KEY = os.environ.get('AVIATIONSTACK_API_KEY')
 
 # Authorization Function
@@ -148,9 +149,9 @@ departure_airport_name = ''
 try:
   departure_airport_iata = depart_iata_list[int(departure_airport_choice) - 1]
   departure_airport_name = depart_name_list[int(departure_airport_choice) - 1]
-except:
+except IndexError:
   print("Your choice is invalid. Please Start Over.")
-  sys.exit(1)
+  sys.exit()
 
 # now we must get the destination airport
 print("Enter a destination city: ", end = '')
@@ -174,9 +175,9 @@ arrival_airport_name = ''
 try:
   arrival_airport_iata = arrive_iata_list[int(arrival_airport_choice) - 1]
   arrival_airport_name = arrive_name_list[int(arrival_airport_choice) - 1]
-except:
+except IndexError:
   print("Your choice is invalid. Please Start Over")
-  sys.exit(1)
+  sys.exit()
 
 # get a date from the user
 print("Enter your earliest date (yyyy-mm-dd): ", end = '')
@@ -197,21 +198,14 @@ print_routes(flights_response, flights_list)
 print("Choose a flight (type the number): ", end = '')
 flight_opt_num = input()
 
-# var information
-# Dearture City var for weather
-  # departure_city
-# Arrival City var for weather
-  # arrival_city
-
-
 # Overall route
 overall_route = departure_airport_iata + " -> " + arrival_airport_iata
 # Flight Days vars for weather
 try:
   route_list = list(flights_list[int(flight_opt_num) - 1][flight_opt_num].values())
-except:
+except IndexError:
   print("Your Selection was invalid. Please Start Over")
-  sys.exit(1)
+  sys.exit()
 start_flight_day = route_list[0][1][:10]
 end_flight_day = route_list[len(route_list) - 1][1][:10]
 # Time of first departure for math
@@ -270,7 +264,6 @@ for key in day_forecast_info['day']:
 departure_forecast_dict["temp"] = departure_forecast[0:6]
 departure_forecast_dict["air_condition"] = departure_forecast[6:12]
 departure_forecast_dict["other_conditions"] = departure_forecast[12:18]
-
 
 # Variables for arrival weather 
 arrival_forecast_data = get_forecast(arrival_city)
