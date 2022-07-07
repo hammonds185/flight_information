@@ -6,7 +6,6 @@ import sys
 import datetime
 
 
-
 API_KEY = os.environ.get('AVIATIONSTACK_API_KEY')
 
 # Authorization Function
@@ -74,7 +73,7 @@ def print_arrive_airports(arrive_iata_list, arrive_name_list):
 
 def validate(date_text):
   try:
-    datetime.datetime.strptime(date_text, '%Y-%m-%d')
+        datetime.datetime.strptime(date_text, '%Y-%m-%d')
   except ValueError:
     print("Incorrect data format, should be YYYY-MM-DD. Please Start Over")
     sys.exit(1)
@@ -126,7 +125,7 @@ def print_routes(flights_response, flights_list):
 
 
 
-print("Enter departure city: ", end = '')
+print("Enter departure city: ", end='')
 #change this to user input
 departure_city = input()
 head = auth_amadeus()
@@ -212,7 +211,7 @@ end_flight_day = route_list[len(route_list) - 1][1][:10]
 time_of_departure = list(flights_list[int(flight_opt_num) - 1][flight_opt_num].values())[0][1][11:]
 
 # name of airports and overall route
-print("Your Flight: " + departure_airport_name + " -> " + arrival_airport_name + "(" + overall_route+ ")")
+print("Your Flight: " + departure_airport_name + " -> " + arrival_airport_name + "(" + overall_route + ")")
 # departure and arrival city
 print("Dearture City:  " + departure_city + "\nArrival City: " + arrival_city)
 # day and time for departure
@@ -265,10 +264,8 @@ departure_forecast_dict["temp"] = departure_forecast[0:6]
 departure_forecast_dict["air_condition"] = departure_forecast[6:12]
 departure_forecast_dict["other_conditions"] = departure_forecast[12:18]
 
-# Variables for arrival weather 
+# Variables for arrival weather
 arrival_forecast_data = get_forecast(arrival_city)
-
-
 arrival_forecast_dict = {"temp": [], "air_condition": [], "other_conditions": []}
 arrival_forecast = []
 day2_forecast_info = departure_forecast_data["forecast"]["forecastday"][0]
