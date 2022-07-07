@@ -6,27 +6,29 @@ import sqlalchemy as db
 
 API_KEY = os.environ.get('AVIATIONSTACK_API_KEY')
 
-# Authorization Function
-def auth_amadeus():
-  AUTH_URL = 'https://test.api.amadeus.com/v1/security/oauth2/token'
-  auth_response = requests.post(AUTH_URL, {
-  'grant_type': 'client_credentials',
-  'client_id': os.environ.get('AMADEUS_CLIENT_ID'),
-  'client_secret': os.environ.get('AMADEUS_CLIENT_SECRET')
-  })
-  auth_response_data = auth_response.json()
-  access_token = auth_response_data['access_token']
-  headers = {'Authorization': 'Bearer {token}'.format(token=access_token),
-  'X-HTTP-Method-Override': 'GET'}
-  return headers
+# Authorization Functio
 
-#FUNCTION GET_REQUEST, RETURN JSON RESPONSE
+
+def auth_amadeus():
+    AUTH_URL = 'https://test.api.amadeus.com/v1/security/oauth2/token'
+    auth_response = requests.post(AUTH_URL, 
+                                {'grant_type': 'client_credentials',
+                                 'client_id': os.environ.get('AMADEUS_CLIENT_ID'),
+                                 'client_secret': os.environ.get('AMADEUS_CLIENT_SECRET')
+                                })
+    auth_response_data = auth_response.json()
+    access_token = auth_response_data['access_token']
+    headers = {'Authorization': 'Bearer {token}'.format(token=access_token),
+             'X-HTTP-Method-Override': 'GET'}
+    return headers
+
+# FUNCTION GET_REQUEST, RETURN JSON RESPONSE
 def get_request(headers, city):
   params = {'subType': ['AIRPORT'],
-    'keyword': str(city)
-  }
+            'keyword': str(city)
+            }
   BASE_URL = 'https://test.api.amadeus.com/v1/reference-data/locations?subType=AIRPORT&keyword=' + city + '&view=LIGHT'
-  r = requests.get(BASE_URL, headers = headers)
+  r = requests.get(BASE_URL, headers=headers)
   return(r.json())
 
 # Print list of airports for user and store info
@@ -39,7 +41,7 @@ def print_depart_airports(depart_iata_list, depart_name_list):
     name = airport['name']
     detailed_name = airport['detailedName']
     iataCode = airport['iataCode']
-    print(str(numbering) + '. ', name, detailed_name, '('+  iataCode +')')
+    print(str(numbering) + '. ', name, detailed_name, '('+ iataCode + ')')
     depart_iata_list.append(iataCode)
     depart_name_list.append(name)
     numbering += 1
@@ -84,30 +86,29 @@ def get_flights_request(headers, departure_airport_iata, arrival_airport_iata):
       "GDS"
     ]
   }
-  auth_response = requests.post(BASE_URL, headers=headers, json=data )
+  auth_response = requests.post(BASE_URL, headers=headers, json=data)
   auth_response_data = auth_response.json()
   return(auth_response_data)
 
 # make list of route iata's for display then prints it for the user (FUNCTION)
 def print_routes(flights_response, flights_list):
-  # parse
-  available_routes = flights_response['data']
-  #create list of options
-  count = 1  
-  for route in available_routes:
-    segments = route['segments']
-    flights_list.append({str(count) : {}})
-    print(str(count) + ". ")
-    segment_dict = flights_list[count - 1][str(count)]
-    for segment in segments:
-      departure_iata = segment['departure']["iataCode"]
-      arrival_iata = segment['arrival']["iataCode"]
-      segment_name = departure_iata + " -> " + arrival_iata
-      segment_dict[segment_name] = [departure_iata, segment['departure']["at"], arrival_iata, segment['arrival']["at"]]
-      #print(flights_list)
-      print(segment_name + "\n depart at: " + flights_list[count - 1][str(count)][segment_name][1] + " -> arrive at: " + segment['arrival']["at"])
-    count += 1
-
+    # parse
+    available_routes = flights_response['data']
+    #create list of options
+    count = 1
+    for route in available_routes:
+      segments = route['segments']
+      flights_list.append({str(count):{}})
+      print(str(count) + ". ")
+      segment_dict = flights_list[count - 1][str(count)]
+      for segment in segments:
+        departure_iata = segment['departure']["iataCode"]
+        arrival_iata = segment['arrival']["iataCode"]
+        segment_name = departure_iata + " -> " + arrival_iata
+        segment_dict[segment_name] = [departure_iata, segment['departure']["at"], arrival_iata, segment['arrival']["at"]]
+        #print(flights_list)
+        print(segment_name + "\n depart at: " + flights_list[count - 1][str(count)][segment_name][1] + " -> arrive at: " + segment['arrival']["at"])
+      count += 1
 
 
 print("Enter departure city: ")
@@ -187,12 +188,12 @@ flight_opt_num = input()
 
 # display information
 # Name of airports 
-  # departure_airport_name
-  # arrival_airport_name
+# departure_airport_name
+# arrival_airport_name
 # Dearture City
-  # departure_city
+# departure_city
 # Arrival City
-  # arrival_city
+# arrival_city
 # Overall route
 overall_route = departure_airport_iata + " -> " + arrival_airport_iata
 print(overall_route)
@@ -234,6 +235,7 @@ iata_list = []
 
 #Weather code 
 
+
 #FUNTION GET_FORECAST, RETURN JSON RESPONSE
 def get_forecast(city):
   params = {
@@ -256,7 +258,7 @@ departure_forecast_data = get_forecast(departure_city)
 #include this information in the database 
 
 
-departure_forecast_dict = { "temp": [], "air_condition": [], "other_conditions":[]}
+departure_forecast_dict = {"temp": [], "air_condition": [], "other_conditions":[]}
 departure_forecast = []
 day_forecast_info = departure_forecast_data["forecast"]["forecastday"][0]
 count = 0
@@ -305,8 +307,9 @@ def create_database(forecast_info_dict):
     forecast_df.to_sql('forecast_info_dict', con=engine, if_exists='replace',
                       index=False)
     query_result = engine.execute("SELECT * FROM forecast_info_dict;").fetchall()
-    
+
     return query_result
+
 
 print("This is the weather for departure city: " , departure_city)
 print("date : " + day_forecast_info['date'])
