@@ -1,5 +1,9 @@
 import requests
 import os
+import pandas as pd
+import sqlalchemy as db
+
+
 API_KEY = os.environ.get('AVIATIONSTACK_API_KEY')
 
 # Authorization Function
