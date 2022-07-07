@@ -28,8 +28,8 @@ def auth_amadeus():
 
 def get_request(headers, city):
     params = {'subType': ['AIRPORT'],
-            'keyword': str(city)
-            }
+              'keyword': str(city)
+             }
     BASE_URL = 'https://test.api.amadeus.com/v1/reference-data/locations?subType=AIRPORT&keyword=' + city + '&view=LIGHT'
     r = requests.get(BASE_URL, headers=headers)
     return(r.json())
@@ -55,18 +55,18 @@ def print_depart_airports(depart_iata_list, depart_name_list):
 
 
 def print_arrive_airports(arrive_iata_list, arrive_name_list):
-  name = ''
-  detailed_name = ''
-  iataCode = ''
-  numbering = 1
-  for airport in arrival_airports['data']:
-    name = airport['name']
-    detailed_name = airport['detailedName']
-    iataCode = airport['iataCode']
-    print(str(numbering) + '. ', name, detailed_name, '(' + iataCode + ')')
-    arrive_iata_list.append(iataCode)
-    arrive_name_list.append(name)
-    numbering += 1
+    name = ''
+    detailed_name = ''
+    iataCode = ''
+    numbering = 1
+    for airport in arrival_airports['data']:
+        name = airport['name']
+        detailed_name = airport['detailedName']
+        iataCode = airport['iataCode']
+        print(str(numbering) + '. ', name, detailed_name, '(' + iataCode + ')')
+        arrive_iata_list.append(iataCode)
+        arrive_name_list.append(name)
+        numbering += 1
 
 # POST request for flights FUNCTION
 
@@ -138,7 +138,7 @@ depart_name_list = []
 # call funct to print options
 print_depart_airports(depart_iata_list, depart_name_list)
 
-#get the choice
+# get the choice
 departure_airport_choice = input()
 departure_airport_iata = ''
 departure_airport_name = ''
@@ -212,7 +212,7 @@ print(overall_route)
 # the keys in flights_list[int(flight_opt_num) - 1][flight_opt_num]
 # Day of First Flight
 flight_day = list(flights_list[int(flight_opt_num) - 1][flight_opt_num].values())[0][1][:10]
-# Time of first departure 
+# Time of first departure
 time_of_departure = list(flights_list[int(flight_opt_num) - 1][flight_opt_num].values())[0][1][11:]
 # Time of departures
 # Time of arrivals
@@ -292,7 +292,7 @@ departure_forecast_dict["other_conditions"] = departure_forecast[12:18]
 arrival_forecast_data = get_forecast(arrival_city)
 
 
-arrival_forecast_dict = {"temp": [], "air_condition": [], "other_conditions":[]}
+arrival_forecast_dict = {"temp": [], "air_condition": [], "other_conditions": []}
 arrival_forecast = []
 day2_forecast_info = departure_forecast_data["forecast"]["forecastday"][0]
 count = 0
