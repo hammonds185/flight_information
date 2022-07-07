@@ -10,6 +10,7 @@ API_KEY = os.environ.get('AVIATIONSTACK_API_KEY')
 
 # Authorization Function
 
+
 def auth_amadeus():
     AUTH_URL = 'https://test.api.amadeus.com/v1/security/oauth2/token'
     auth_response = requests.post(AUTH_URL, {
@@ -72,11 +73,11 @@ def print_arrive_airports(arrive_iata_list, arrive_name_list):
 
 
 def validate(date_text):
-  try:
-        datetime.datetime.strptime(date_text, '%Y-%m-%d')
-  except ValueError:
-    print("Incorrect data format, should be YYYY-MM-DD. Please Start Over")
-    sys.exit(1)
+    try:
+            datetime.datetime.strptime(date_text, '%Y-%m-%d')
+    except ValueError:
+            print("Incorrect data format, should be YYYY-MM-DD. Please Start Over")
+            sys.exit(1)
 
 
 # POST request for flights FUNCTION
@@ -102,10 +103,10 @@ def get_flights_request(headers, departure_airport_iata, arrival_airport_iata, d
 def print_routes(flights_response, flights_list):
     # parse
     try:
-      available_routes = flights_response['data']
-    except:
+        available_routes = flights_response['data']
+    except KeyError:
         print("There are no available flights. Please start again.")
-        sys.exit(1)
+        sys.exit()
 
     # create list of options
     count = 1
@@ -122,11 +123,8 @@ def print_routes(flights_response, flights_list):
             print(segment_name + "\n\tdepart on: " + flights_list[count - 1][str(count)][segment_name][1][:10] + " Time: " + flights_list[count - 1][str(count)][segment_name][1][11:])
             print("\tarrive on: " + segment['arrival']["at"][:10] + " Time: " + segment['arrival']["at"][11:])
         count += 1
-
-
-
 print("Enter departure city: ", end='')
-#change this to user input
+# change this to user input
 departure_city = input()
 head = auth_amadeus()
 depart_airports = get_request(head, departure_city)
@@ -253,7 +251,7 @@ departure_forecast = []
 day_forecast_info = departure_forecast_data["forecast"]["forecastday"][0]
 count = 0
 for key in day_forecast_info['day']:
-    val = str(key) + " : " + str(day_forecast_info['day'][key])
+    val=str(key) + " : " + str(day_forecast_info['day'][key])
     departure_forecast.insert(count, val)
     if key == "condition":
         val = str(key) + " : " + str(day_forecast_info['day']["condition"]["text"])
@@ -292,7 +290,7 @@ def create_database(forecast_info_dict):
 
     # creating a database from dataframe
     engine = db.create_engine('sqlite:///weather_forcast.db')
-    forecast_df.to_sql('forecast_info_dict', 
+    forecast_df.to_sql('forecast_info_dict',
                        con=engine, 
                        if_exists='replace',
                        index=False)
