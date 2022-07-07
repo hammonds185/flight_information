@@ -11,11 +11,10 @@ API_KEY = os.environ.get('AVIATIONSTACK_API_KEY')
 
 def auth_amadeus():
     AUTH_URL = 'https://test.api.amadeus.com/v1/security/oauth2/token'
-    auth_response = requests.post(AUTH_URL,
-                                  {'grant_type': 'client_credentials',
-                                   'client_id': os.environ.get('AMADEUS_CLIENT_ID'),
-                                   'client_secret': os.environ.get('AMADEUS_CLIENT_SECRET')
-                                    }
+    auth_response = requests.post(AUTH_URL, {'grant_type': 'client_credentials',
+                                             'client_id': os.environ.get('AMADEUS_CLIENT_ID'),
+                                             'client_secret': os.environ.get('AMADEUS_CLIENT_SECRET')
+                                            }
                                   )
     auth_response_data = auth_response.json()
     access_token = auth_response_data['access_token']
@@ -72,29 +71,18 @@ def print_arrive_airports(arrive_iata_list, arrive_name_list):
 
 
 def get_flights_request(headers, departure_airport_iata, arrival_airport_iata):
-  BASE_URL = 'https://test.api.amadeus.com/v1/shopping/availability/flight-availabilities'
-  data = {
-    "originDestinations": [
-      {
-        "id": "1",
-        "originLocationCode": "CVG",
-        "destinationLocationCode": "LAX",
-        "departureDateTime": {
-          "date": "2022-07-08",
-          "time": "21:15:00"
-        }
-      }
-    ],
-    "travelers": [
-      {
-        "id": "1",
-        "travelerType": "ADULT"
-      }
-    ],
-    "sources": [
-      "GDS"
-    ]
-  }
+    BASE_URL = 'https://test.api.amadeus.com/v1/shopping/availability/flight-availabilities'
+    data = {
+            "originDestinations": [{"id": "1",
+                                    "originLocationCode": "CVG",
+                                    "destinationLocationCode": "LAX",
+                                    "departureDateTime": {"date": "2022-07-08",
+                                                          "time": "21:15:00"
+                                                         }
+                                   }],
+            "travelers": [{"id": "1", "travelerType": "ADULT"}],
+            "sources": ["GDS"]
+          }
   auth_response = requests.post(BASE_URL, headers=headers, json=data)
   auth_response_data = auth_response.json()
   return(auth_response_data)
@@ -187,7 +175,7 @@ flights_list = []
 
 # POST request
 flights_response = get_flights_request(head, departure_airport_iata, arrival_airport_iata)
-#print(flights_response)
+# print(flights_response)
 
 # display list of available flights
 print("here are flights from " + departure_city + " to " + arrival_city + ": ")
@@ -244,7 +232,7 @@ iata_list = []
 #     print(flight['arrival']['airport'])
 #     print("\n")
 
-# Weather code 
+# Weather code
 
 
 # FUNTION GET_FORECAST, RETURN JSON RESPONSE
@@ -319,7 +307,7 @@ def create_database(forecast_info_dict):
     # creating a database from dataframe
     engine = db.create_engine('sqlite:///weather_forcast.db')
     forecast_df.to_sql('forecast_info_dict', con=engine, if_exists='replace',
-                      index=False)
+                        index=False)
     query_result = engine.execute("SELECT * FROM forecast_info_dict;").fetchall()
 
     return query_result
