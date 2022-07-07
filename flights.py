@@ -26,8 +26,7 @@ def auth_amadeus():
 
 def get_request(headers, city):
     params = {'subType': ['AIRPORT'],
-              'keyword': str(city)
-             }
+              'keyword': str(city)}
     BASE_URL = 'https://test.api.amadeus.com/v1/reference-data/locations?subType=AIRPORT&keyword=' + city + '&view=LIGHT'
     r = requests.get(BASE_URL, headers=headers)
     return(r.json())
@@ -95,18 +94,18 @@ def print_routes(flights_response, flights_list):
     # create list of options
     count = 1
     for route in available_routes:
-      segments = route['segments']
-      flights_list.append({str(count): {}})
-      print(str(count) + ". ")
-      segment_dict = flights_list[count - 1][str(count)]
-      for segment in segments:
-        departure_iata = segment['departure']["iataCode"]
-        arrival_iata = segment['arrival']["iataCode"]
-        segment_name = departure_iata + " -> " + arrival_iata
-        segment_dict[segment_name] = [departure_iata, segment['departure']["at"], arrival_iata, segment['arrival']["at"]]
-        # print(flights_list)
-        print(segment_name + "\n depart at: " + flights_list[count - 1][str(count)][segment_name][1] + " -> arrive at: " + segment['arrival']["at"])
-      count += 1
+        segments = route['segments']
+        flights_list.append({str(count): {}})
+        print(str(count) + ". ")
+        segment_dict = flights_list[count - 1][str(count)]
+        for segment in segments:
+            departure_iata = segment['departure']["iataCode"]
+            arrival_iata = segment['arrival']["iataCode"]
+            segment_name = departure_iata + " -> " + arrival_iata
+            segment_dict[segment_name] = [departure_iata, segment['departure']["at"], arrival_iata, segment['arrival']["at"]]
+            # print(flights_list)
+            print(segment_name + "\n depart at: " + flights_list[count - 1][str(count)][segment_name][1] + " -> arrive at: " + segment['arrival']["at"])
+        count += 1
 
 
 print("Enter departure city: ")
@@ -210,7 +209,7 @@ name = ''
 detailed_name = ''
 iataCode = ''
 iata_list = []
-#numbering = 1
+# numbering = 1
 
 # Print list of airports for user and store info
 # start here
@@ -251,7 +250,7 @@ def get_forecast(city):
   return(r.json())
 
 
-# Collect and display weather info for departure and arrival city 
+# Collect and display weather info for departure and arrival city
 # Variables for departure weather 
 departure_forecast_data = get_forecast(departure_city)
 # holds the weather information in a dictionary in case we want to 
@@ -305,8 +304,10 @@ def create_database(forecast_info_dict):
 
     # creating a database from dataframe
     engine = db.create_engine('sqlite:///weather_forcast.db')
-    forecast_df.to_sql('forecast_info_dict', con=engine, if_exists='replace',
-                        index=False)
+    forecast_df.to_sql('forecast_info_dict', 
+                       con=engine, 
+                       if_exists='replace',
+                       index=False)
     query_result = engine.execute("SELECT * FROM forecast_info_dict;").fetchall()
 
     return query_result
