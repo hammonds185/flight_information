@@ -15,12 +15,12 @@ def auth_amadeus():
                                   {'grant_type': 'client_credentials',
                                    'client_id': os.environ.get('AMADEUS_CLIENT_ID'),
                                    'client_secret': os.environ.get('AMADEUS_CLIENT_SECRET')
-                                  }
-                                 )
+                                    }
+                                  )
     auth_response_data = auth_response.json()
     access_token = auth_response_data['access_token']
     headers = {'Authorization': 'Bearer {token}'.format(token=access_token),
-             'X-HTTP-Method-Override': 'GET'}
+               'X-HTTP-Method-Override': 'GET'}
     return headers
 
 # FUNCTION GET_REQUEST, RETURN JSON RESPONSE
@@ -38,18 +38,18 @@ def get_request(headers, city):
 
 
 def print_depart_airports(depart_iata_list, depart_name_list):
-  numbering = 1
-  name = ''
-  detailed_name = ''
-  iataCode = ''
-  for airport in depart_airports['data']:
-    name = airport['name']
-    detailed_name = airport['detailedName']
-    iataCode = airport['iataCode']
-    print(str(numbering) + '. ', name, detailed_name, '(' + iataCode + ')')
-    depart_iata_list.append(iataCode)
-    depart_name_list.append(name)
-    numbering += 1
+    numbering = 1
+    name = ''
+    detailed_name = ''
+    iataCode = ''
+    for airport in depart_airports['data']:
+        name = airport['name']
+        detailed_name = airport['detailedName']
+        iataCode = airport['iataCode']
+        print(str(numbering) + '. ', name, detailed_name, '(' + iataCode + ')')
+        depart_iata_list.append(iataCode)
+        depart_name_list.append(name)
+        numbering += 1
 
 # Print list of airports for user and store info
 
@@ -63,7 +63,7 @@ def print_arrive_airports(arrive_iata_list, arrive_name_list):
     name = airport['name']
     detailed_name = airport['detailedName']
     iataCode = airport['iataCode']
-    print(str(numbering) + '. ', name, detailed_name, '('+ iataCode +')')
+    print(str(numbering) + '. ', name, detailed_name, '(' + iataCode + ')')
     arrive_iata_list.append(iataCode)
     arrive_name_list.append(name)
     numbering += 1
@@ -117,13 +117,13 @@ def print_routes(flights_response, flights_list):
         arrival_iata = segment['arrival']["iataCode"]
         segment_name = departure_iata + " -> " + arrival_iata
         segment_dict[segment_name] = [departure_iata, segment['departure']["at"], arrival_iata, segment['arrival']["at"]]
-        #print(flights_list)
+        # print(flights_list)
         print(segment_name + "\n depart at: " + flights_list[count - 1][str(count)][segment_name][1] + " -> arrive at: " + segment['arrival']["at"])
       count += 1
 
 
 print("Enter departure city: ")
-#change this to user input
+# change this to user input
 departure_city = input()
 head = auth_amadeus()
 depart_airports = get_request(head, departure_city)
@@ -198,7 +198,7 @@ print("Choose a flight: ")
 flight_opt_num = input()
 
 # display information
-# Name of airports 
+# Name of airports
 # departure_airport_name
 # arrival_airport_name
 # Dearture City
@@ -271,7 +271,7 @@ departure_forecast_data = get_forecast(departure_city)
 # include this information in the database 
 
 
-departure_forecast_dict = {"temp": [], "air_condition": [], "other_conditions":[]}
+departure_forecast_dict = {"temp": [], "air_condition": [], "other_conditions": []}
 departure_forecast = []
 day_forecast_info = departure_forecast_data["forecast"]["forecastday"][0]
 count = 0
@@ -308,6 +308,7 @@ arrival_forecast_dict["temp"] = departure_forecast[0:6]
 arrival_forecast_dict["air_condition"] = departure_forecast[6:12]
 arrival_forecast_dict["other_conditions"] = departure_forecast[12:18]
 
+
 def create_database(forecast_info_dict):
     if forecast_info_dict is None:
         return None
@@ -329,7 +330,7 @@ print("date : " + day_forecast_info['date'])
 query_result = create_database(departure_forecast_dict)
 print((pd.DataFrame(query_result)))
 
-print("This is the weather for arrival city: " , arrival_city)
+print("This is the weather for arrival city: ", arrival_city)
 print("date : " + day2_forecast_info['date'])
 query_result2 = create_database(arrival_forecast_dict)
 print((pd.DataFrame(query_result2)))
