@@ -74,10 +74,10 @@ def print_arrive_airports(arrive_iata_list, arrive_name_list):
 
 def validate(date_text):
     try:
-            datetime.datetime.strptime(date_text, '%Y-%m-%d')
+        datetime.datetime.strptime(date_text, '%Y-%m-%d')
     except ValueError:
-            print("Incorrect data format, should be YYYY-MM-DD. Please Start Over")
-            sys.exit(1)
+        print("Incorrect data format, should be YYYY-MM-DD. Please Start Over")
+        sys.exit(1)
 
 
 # POST request for flights FUNCTION
@@ -123,6 +123,8 @@ def print_routes(flights_response, flights_list):
             print(segment_name + "\n\tdepart on: " + flights_list[count - 1][str(count)][segment_name][1][:10] + " Time: " + flights_list[count - 1][str(count)][segment_name][1][11:])
             print("\tarrive on: " + segment['arrival']["at"][:10] + " Time: " + segment['arrival']["at"][11:])
         count += 1
+
+
 print("Enter departure city: ", end='')
 # change this to user input
 departure_city = input()
@@ -139,19 +141,19 @@ depart_name_list = []
 # call funct to print options
 print_depart_airports(depart_iata_list, depart_name_list)
 
-#get the choice
+# get the choice
 departure_airport_choice = input("Choice: ")
 departure_airport_iata = ''
 departure_airport_name = ''
 try:
-  departure_airport_iata = depart_iata_list[int(departure_airport_choice) - 1]
-  departure_airport_name = depart_name_list[int(departure_airport_choice) - 1]
+    departure_airport_iata = depart_iata_list[int(departure_airport_choice) - 1]
+    departure_airport_name = depart_name_list[int(departure_airport_choice) - 1]
 except IndexError:
-  print("Your choice is invalid. Please Start Over.")
-  sys.exit()
+    print("Your choice is invalid. Please Start Over.")
+    sys.exit()
 
 # now we must get the destination airport
-print("Enter a destination city: ", end = '')
+print("Enter a destination city: ", end='')
 
 # change this to user input
 arrival_city = input()
@@ -165,26 +167,26 @@ arrive_name_list = []
 # display arrival airports
 print_arrive_airports(arrive_iata_list, arrive_name_list)
 
-#get the choice
+# get the choice
 arrival_airport_choice = input("Choice: ")
 arrival_airport_iata = ''
 arrival_airport_name = ''
 try:
-  arrival_airport_iata = arrive_iata_list[int(arrival_airport_choice) - 1]
-  arrival_airport_name = arrive_name_list[int(arrival_airport_choice) - 1]
+    arrival_airport_iata = arrive_iata_list[int(arrival_airport_choice) - 1]
+    arrival_airport_name = arrive_name_list[int(arrival_airport_choice) - 1]
 except IndexError:
-  print("Your choice is invalid. Please Start Over")
-  sys.exit()
+    print("Your choice is invalid. Please Start Over")
+    sys.exit()
 
 # get a date from the user
-print("Enter your earliest date (yyyy-mm-dd): ", end = '')
+print("Enter your earliest date (yyyy-mm-dd): ", end='')
 date = input()
 validate(date)
 
 # variables to be used outside of the function
 flights_list = []
 
-#call function for POST request to get list of flights
+# call function for POST request to get list of flights
 flights_response = get_flights_request(head, departure_airport_iata, arrival_airport_iata, date)
 
 # display list of available flights
@@ -192,17 +194,17 @@ print("Here are flights from " + departure_city + " to " + arrival_city + ": ")
 print_routes(flights_response, flights_list)
 
 # Choose a flight
-print("Choose a flight (type the number): ", end = '')
+print("Choose a flight (type the number): ", end='')
 flight_opt_num = input()
 
 # Overall route
 overall_route = departure_airport_iata + " -> " + arrival_airport_iata
 # Flight Days vars for weather
 try:
-  route_list = list(flights_list[int(flight_opt_num) - 1][flight_opt_num].values())
+    route_list = list(flights_list[int(flight_opt_num) - 1][flight_opt_num].values())
 except IndexError:
-  print("Your Selection was invalid. Please Start Over")
-  sys.exit()
+    print("Your Selection was invalid. Please Start Over")
+    sys.exit()
 start_flight_day = route_list[0][1][:10]
 end_flight_day = route_list[len(route_list) - 1][1][:10]
 # Time of first departure for math
@@ -217,7 +219,7 @@ print("Departure Day and Time: " + start_flight_day + " at " + time_of_departure
 # connections
 print("Flight Connections: ")
 for key in flights_list[int(flight_opt_num) - 1][flight_opt_num]:
-  print(f'\t{key}')
+    print(f'\t{key}')
 
 
 # Weather code
@@ -251,7 +253,7 @@ departure_forecast = []
 day_forecast_info = departure_forecast_data["forecast"]["forecastday"][0]
 count = 0
 for key in day_forecast_info['day']:
-    val=str(key) + " : " + str(day_forecast_info['day'][key])
+    val = str(key) + " : " + str(day_forecast_info['day'][key])
     departure_forecast.insert(count, val)
     if key == "condition":
         val = str(key) + " : " + str(day_forecast_info['day']["condition"]["text"])
@@ -291,7 +293,7 @@ def create_database(forecast_info_dict):
     # creating a database from dataframe
     engine = db.create_engine('sqlite:///weather_forcast.db')
     forecast_df.to_sql('forecast_info_dict',
-                       con=engine, 
+                       con=engine,
                        if_exists='replace',
                        index=False)
     query_result = engine.execute("SELECT * FROM forecast_info_dict;").fetchall()
