@@ -202,7 +202,6 @@ time_of_departure = list(flights_list[int(flight_opt_num) - 1][flight_opt_num].v
 # Time of arrivals
 print(flights_list[int(flight_opt_num) - 1])
 
-<<<<<<< HEAD
 # initialize variables
 name = ''
 detailed_name = ''
@@ -228,8 +227,22 @@ iata_list = []
 #     print(flight['departure']['airport'])
 #     print(flight['arrival']['airport'])
 #     print("\n")
-=======
->>>>>>> e5c2c371528c93c71e040f6c63af9ceb5593ceeb
+
+#Weather code 
+
+#FUNTION GET_FORECAST, RETURN JSON RESPONSE
+def get_forecast(city):
+  params = {
+    #'key': os.environ.get('WEATHERAPI_API_KEY'),
+    'key': os.environ.get('WEATHERAPI_API_KEY'),
+    'q': str(city),
+    'days': '1',
+    'aqi': "yes",
+    'alerts': "yes"
+  }
+  BASE_URL = 'https://api.weatherapi.com/v1/forecast.json?'
+  r = requests.get(BASE_URL, params)
+  return(r.json())
 
 
 # Collect and display weather info for departure and arrival city 
@@ -237,28 +250,66 @@ iata_list = []
 departure_forecast_data = get_forecast(departure_city)
 #holds the weather information in a dictionary in case we want to 
 #include this information in the database 
-departure_forecast = {}
-day_forecast_info = departure_forecast_data["forecast"]["forecastday"][0]
 
-print("This is the weather for departure city: " , departure_city)
-print("date : " + day_forecast_info['date'])
+
+departure_forecast_dict = { "temp": [], "air_condition": [], "other_conditions":[]}
+departure_forecast = []
+day_forecast_info = departure_forecast_data["forecast"]["forecastday"][0]
+count = 0
 for key in day_forecast_info['day']:
-  if key == "condition":
-    departure_forecast[key] = day_forecast_info['day']["condition"]["text"]
-  departure_forecast[key] = day_forecast_info['day'][key]
-  print(key, ":", departure_forecast[key])
+    val = str(key) + " : " + str(day_forecast_info['day'][key])
+    departure_forecast.insert(count, val)
+    if key == "condition":
+        val = str(key) + " : " + str(day_forecast_info['day']["condition"]["text"])
+        departure_forecast.insert(count, val)
+    #print(departure_forecast[count])
+    count += 1
+departure_forecast_dict["temp"] = departure_forecast[0:6]
+departure_forecast_dict["air_condition"] = departure_forecast[6:12]
+departure_forecast_dict["other_conditions"] = departure_forecast[12:18]
+
 
 # Variables for arrival weather 
 arrival_forecast_data = get_forecast(arrival_city)
-arrival_forecast = {}
-day2_forecast_info = arrival_forecast_data["forecast"]["forecastday"][0]
+
+
+arrival_forecast_dict = { "temp": [], "air_condition": [], "other_conditions":[]}
+arrival_forecast = []
+day2_forecast_info = departure_forecast_data["forecast"]["forecastday"][0]
+count = 0
+for key in day2_forecast_info['day']:
+    val = str(key) + " : " + str(day2_forecast_info['day'][key])
+    arrival_forecast.insert(count, val)
+    if key == "condition":
+        val = str(key) + " : " + str(day2_forecast_info['day']["condition"]["text"])
+        arrival_forecast.insert(count, val)
+    #print(departure_forecast[count])
+    count += 1
+arrival_forecast_dict["temp"] = departure_forecast[0:6]
+arrival_forecast_dict["air_condition"] = departure_forecast[6:12]
+arrival_forecast_dict["other_conditions"] = departure_forecast[12:18]
+
+def create_database(forecast_info_dict):
+    if forecast_info_dict is None:
+        return None
+    # create dataframe from the extracted records
+    forecast_df = pd.DataFrame.from_dict(forecast_info_dict)
+    print(forecast_df)
+
+    # creating a database from dataframe
+    engine = db.create_engine('sqlite:///weather_forcast.db')
+    forecast_df.to_sql('forecast_info_dict', con=engine, if_exists='replace',
+                      index=False)
+    query_result = engine.execute("SELECT * FROM forecast_info_dict;").fetchall()
+    
+    return query_result
+
+print("This is the weather for departure city: " , departure_city)
+print("date : " + day_forecast_info['date'])
+query_result = create_database(departure_forecast_dict)
+print((pd.DataFrame(query_result)))
 
 print("This is the weather for arrival city: " , arrival_city)
 print("date : " + day2_forecast_info['date'])
-for key in day2_forecast_info['day']:
-  if key == "condition":
-    arrival_forecast[key] = day2_forecast_info['day']["condition"]["text"]
-  arrival_forecast[key] = day2_forecast_info['day'][key]
-  print(key, ":", arrival_forecast[key])
-
-  
+query_result2 = create_database(arrival_forecast_dict)
+print((pd.DataFrame(query_result2)))
