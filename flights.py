@@ -254,10 +254,8 @@ for key in flights_list[int(flight_opt_num) - 1][flight_opt_num]:
     print(f'\t{key}')
 # get date
 local_time = pytz.timezone(timezone) 
-today = datetime.datetime.now(local_time)
-print(today)
+today = datetime.datetime.now()
 fday = datetime.datetime(2022,int(start_flight_day[5:7]),int(start_flight_day[8:]),int(time_of_departure[:2]),int(time_of_departure[3:5]))
-print(fday)
 time_diff = fday - today
 print(f"Your flight is in {time_diff}")
 
