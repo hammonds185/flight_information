@@ -97,7 +97,7 @@ def get_flights_request(headers, departure_airport_iata,
                                     "originLocationCode":
                                     departure_airport_iata,
                                     "destinationLocationCode":
-                                    arrival_airport_iata, "departureDateTime": 
+                                    arrival_airport_iata, "departureDateTime":
                                     {"date": date, "time": "21:15:00"}}],
             "travelers": [{"id": "1", "travelerType": "ADULT"}],
             "sources": ["GDS"]}
@@ -161,8 +161,10 @@ departure_airport_choice = input("Choice: ")
 departure_airport_iata = ''
 departure_airport_name = ''
 try:
-    departure_airport_iata = depart_iata_list[int(departure_airport_choice) - 1]
-    departure_airport_name = depart_name_list[int(departure_airport_choice) - 1]
+    departure_airport_iata = depart_iata_list[
+                                             int(departure_airport_choice) - 1]
+    departure_airport_name = depart_name_list[
+                                             int(departure_airport_choice) - 1]
 except IndexError:
     print("Your choice is invalid. Please Start Over.")
     sys.exit()
