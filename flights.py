@@ -33,7 +33,8 @@ def auth_amadeus():
 def get_request(headers, city):
     params = {'subType': ['AIRPORT'],
               'keyword': str(city)}
-    BASE_URL = 'https://test.api.amadeus.com/v1/reference-data/locations?subType=AIRPORT&keyword=' + city + '&view=LIGHT'
+    BASE_URL = 'https://test.api.amadeus.com/v1/reference-data/locations?'\
+    'subType=AIRPORT&keyword=' + city + '&view=LIGHT'
     r = requests.get(BASE_URL, headers=headers)
     return(r.json())
 
@@ -87,7 +88,8 @@ def validate(date_text):
 
 
 def get_flights_request(headers, departure_airport_iata, arrival_airport_iata, date):
-    BASE_URL = 'https://test.api.amadeus.com/v1/shopping/availability/flight-availabilities'
+    BASE_URL = 'https://test.api.amadeus.com/v1/shopping/availability/'\
+    'flight-availabilities'
     data = {
             "originDestinations": [{"id": "1",
                                     "originLocationCode": departure_airport_iata,
