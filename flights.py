@@ -14,10 +14,10 @@ API_KEY = os.environ.get('AVIATIONSTACK_API_KEY')
 def auth_amadeus():
     AUTH_URL = 'https://test.api.amadeus.com/v1/security/oauth2/token'
     auth_response = requests.post(AUTH_URL, {
-                                             'grant_type': 'client_credentials'
+                                            'grant_type': 'client_credentials'
                                              , 'client_id':
-                                             os.environ.get('AMADEUS_CLIENT_ID'),
-                                             'client_secret': 
+                                             os.environ.get('AMADEUS_CLIENT_ID'
+                                             ),'client_secret':
                                              os.environ.get(
                                                  'AMADEUS_CLIENT_SECRET')}
                                   )
