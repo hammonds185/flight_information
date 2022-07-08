@@ -4,6 +4,7 @@ import pandas as pd
 import sqlalchemy as db
 import sys
 import datetime
+import pytz
 
 
 API_KEY = os.environ.get('AVIATIONSTACK_API_KEY')
@@ -229,7 +230,16 @@ end_flight_day = route_list[len(route_list) - 1][1][:10]
 # Time of first departure for math
 time_of_departure = list(flights_list[int(flight_opt_num) - 1]
                          [flight_opt_num].values())[0][1][11:]
-
+# Timezone handling
+zones = pytz.all_timezones 
+print("Enter the number beside your local time zone:")
+num = 1
+us_zones = zones[577: 588]
+for zone in us_zones:
+        print(str(num) + " " + zone)
+        num += 1
+timezone_num = input("choice: ")
+timezone = us_zones[int(timezone_num) - 1]
 # name of airports and overall route
 print("Your Flight: " + departure_airport_name + " -> " +
       arrival_airport_name + "(" + overall_route + ")")
@@ -242,7 +252,14 @@ print("Departure Day and Time: " + start_flight_day +
 print("Flight Connections: ")
 for key in flights_list[int(flight_opt_num) - 1][flight_opt_num]:
     print(f'\t{key}')
-
+# get date
+local_time = pytz.timezone(timezone) 
+today = datetime.datetime.now(local_time)
+print(today)
+fday = datetime.datetime(2022,int(start_flight_day[5:7]),int(start_flight_day[8:]),int(time_of_departure[:2]),int(time_of_departure[3:5]))
+print(fday)
+time_diff = fday - today
+print(f"Your flight is in {time_diff}")
 
 # Weather code
 
