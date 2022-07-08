@@ -241,6 +241,7 @@ for zone in us_zones:
 timezone_num = input("choice: ")
 timezone = us_zones[int(timezone_num) - 1]
 # name of airports and overall route
+print()
 print("Your Flight: " + departure_airport_name + " -> " +
       arrival_airport_name + "(" + overall_route + ")")
 # departure and arrival city
@@ -333,7 +334,6 @@ def create_database(forecast_info_dict):
         return None
     # create dataframe from the extracted records
     forecast_df = pd.DataFrame.from_dict(forecast_info_dict)
-    print(forecast_df)
 
     # creating a database from dataframe
     engine = db.create_engine('sqlite:///weather_forcast.db')
@@ -345,7 +345,7 @@ def create_database(forecast_info_dict):
                                 "SELECT * FROM" +
                                 " forecast_info_dict;").fetchall()
 
-    return query_result
+    return forecast_df
 
 
 print("This is the weather for departure city: ", departure_city)
