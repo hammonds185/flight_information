@@ -327,7 +327,7 @@ def create_database(forecast_info_dict):
                        if_exists='replace',
                        index=False)
     query_result = engine.execute(
-                                "SELECT * FROM"+
+                                "SELECT * FROM" +
                                 " forecast_info_dict;").fetchall()
 
     return query_result
