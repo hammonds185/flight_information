@@ -281,7 +281,7 @@ for key in day_forecast_info['day']:
     departure_forecast.insert(count, val)
     if key == "condition":
         val = str(key) +
-              " : " + str(day_forecast_info['day']["condition"]["text"])
+                " : " + str(day_forecast_info['day']["condition"]["text"])
         departure_forecast.insert(count, val)
     # print(departure_forecast[count])
     count += 1
@@ -291,7 +291,9 @@ departure_forecast_dict["other_conditions"] = departure_forecast[12:18]
 
 # Variables for arrival weather
 arrival_forecast_data = get_forecast(arrival_city)
-arrival_forecast_dict = {"temp": [], "air_condition": [], "other_conditions": []}
+arrival_forecast_dict = {"temp": [],
+                         "air_condition": [],
+                         "other_conditions": []}
 arrival_forecast = []
 day2_forecast_info = departure_forecast_data["forecast"]["forecastday"][0]
 count = 0
