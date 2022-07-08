@@ -219,17 +219,20 @@ flight_opt_num = input()
 overall_route = departure_airport_iata + " -> " + arrival_airport_iata
 # Flight Days vars for weather
 try:
-    route_list = list(flights_list[int(flight_opt_num) - 1][flight_opt_num].values())
+    route_list = list(flights_list[int(flight_opt_num) - 1]
+                      [flight_opt_num].values())
 except IndexError:
     print("Your Selection was invalid. Please Start Over")
     sys.exit()
 start_flight_day = route_list[0][1][:10]
 end_flight_day = route_list[len(route_list) - 1][1][:10]
 # Time of first departure for math
-time_of_departure = list(flights_list[int(flight_opt_num) - 1][flight_opt_num].values())[0][1][11:]
+time_of_departure = list(flights_list[int(flight_opt_num) - 1]
+                         [flight_opt_num].values())[0][1][11:]
 
 # name of airports and overall route
-print("Your Flight: " + departure_airport_name + " -> " + arrival_airport_name + "(" + overall_route + ")")
+print("Your Flight: " + departure_airport_name + " -> " +
+      arrival_airport_name + "(" + overall_route + ")")
 # departure and arrival city
 print("Dearture City:  " + departure_city + "\nArrival City: " + arrival_city)
 # day and time for departure
@@ -266,7 +269,9 @@ departure_forecast_data = get_forecast(departure_city)
 # include this information in the database
 
 
-departure_forecast_dict = {"temp": [], "air_condition": [], "other_conditions": []}
+departure_forecast_dict = {"temp": [],
+                           "air_condition": [],
+                           "other_conditions": []}
 departure_forecast = []
 day_forecast_info = departure_forecast_data["forecast"]["forecastday"][0]
 count = 0
@@ -274,7 +279,8 @@ for key in day_forecast_info['day']:
     val = str(key) + " : " + str(day_forecast_info['day'][key])
     departure_forecast.insert(count, val)
     if key == "condition":
-        val = str(key) + " : " + str(day_forecast_info['day']["condition"]["text"])
+        val = str(key) + " : " +
+              str(day_forecast_info['day']["condition"]["text"])
         departure_forecast.insert(count, val)
     # print(departure_forecast[count])
     count += 1
