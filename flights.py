@@ -17,7 +17,7 @@ def auth_amadeus():
                                             'grant_type': 'client_credentials',
                                             'client_id':
                                             os.environ.get('AMADEUS_CLIENT_ID'
-                                            ), 'client_secret':
+                                                            ), 'client_secret':
                                             os.environ.get(
                                                  'AMADEUS_CLIENT_SECRET')}
                                   )
@@ -90,11 +90,12 @@ def validate(date_text):
 def get_flights_request(headers, departure_airport_iata,
                         arrival_airport_iata, date):
     BASE_URL = 'https://test.api.amadeus.com/v1/shopping/availability/'\
-    'flight-availabilities'
+               'flight-availabilities'
     data = {
             "originDestinations": [{"id": "1",
-                                    "originLocationCode": departure_airport_iata
-                                    ,"destinationLocationCode": 
+                                    "originLocationCode": 
+                                    departure_airport_iata,
+                                    "destinationLocationCode":
                                     arrival_airport_iata, "departureDateTime": 
                                     {"date": date, "time": "21:15:00"}}],
             "travelers": [{"id": "1", "travelerType": "ADULT"}],
