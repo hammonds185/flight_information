@@ -16,8 +16,9 @@ def auth_amadeus():
     auth_response = requests.post(AUTH_URL, {
                                             'grant_type': 'client_credentials',
                                             'client_id':
-                                            os.environ.get('AMADEUS_CLIENT_ID'
-                                                            ), 'client_secret':
+                                            os.environ.get(
+                                                          'AMADEUS_CLIENT_ID'),
+                                            'client_secret':
                                             os.environ.get(
                                                  'AMADEUS_CLIENT_SECRET')}
                                   )
@@ -93,7 +94,7 @@ def get_flights_request(headers, departure_airport_iata,
                'flight-availabilities'
     data = {
             "originDestinations": [{"id": "1",
-                                    "originLocationCode": 
+                                    "originLocationCode":
                                     departure_airport_iata,
                                     "destinationLocationCode":
                                     arrival_airport_iata, "departureDateTime": 
@@ -126,9 +127,16 @@ def print_routes(flights_response, flights_list):
             departure_iata = segment['departure']["iataCode"]
             arrival_iata = segment['arrival']["iataCode"]
             segment_name = departure_iata + " -> " + arrival_iata
-            segment_dict[segment_name] = [departure_iata, segment['departure']["at"], arrival_iata, segment['arrival']["at"]]
-            print(segment_name + "\n\tdepart on: " + flights_list[count - 1][str(count)][segment_name][1][:10] + " Time: " + flights_list[count - 1][str(count)][segment_name][1][11:])
-            print("\tarrive on: " + segment['arrival']["at"][:10] + " Time: " + segment['arrival']["at"][11:])
+            segment_dict[segment_name] = [departure_iata, 
+                                          segment['departure']["at"], 
+                                          arrival_iata, 
+                                          segment['arrival']["at"]]
+            print(segment_name + "\n\tdepart on: " + 
+                  flights_list[count - 1][str(count)][segment_name][1][:10] +
+                  " Time: " +
+                  flights_list[count - 1][str(count)][segment_name][1][11:])
+            print("\tarrive on: " + segment['arrival']["at"][:10] +
+                  " Time: " + segment['arrival']["at"][11:])
         count += 1
 
 
