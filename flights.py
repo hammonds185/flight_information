@@ -236,7 +236,8 @@ print("Your Flight: " + departure_airport_name + " -> " +
 # departure and arrival city
 print("Dearture City:  " + departure_city + "\nArrival City: " + arrival_city)
 # day and time for departure
-print("Departure Day and Time: " + start_flight_day + " at " + time_of_departure)
+print("Departure Day and Time: " + start_flight_day +
+      " at " + time_of_departure)
 # connections
 print("Flight Connections: ")
 for key in flights_list[int(flight_opt_num) - 1][flight_opt_num]:
@@ -279,8 +280,8 @@ for key in day_forecast_info['day']:
     val = str(key) + " : " + str(day_forecast_info['day'][key])
     departure_forecast.insert(count, val)
     if key == "condition":
-        val = str(key) + " : " +
-              str(day_forecast_info['day']["condition"]["text"])
+        val = str(key) +
+              " : " + str(day_forecast_info['day']["condition"]["text"])
         departure_forecast.insert(count, val)
     # print(departure_forecast[count])
     count += 1
