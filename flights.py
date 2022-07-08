@@ -127,11 +127,11 @@ def print_routes(flights_response, flights_list):
             departure_iata = segment['departure']["iataCode"]
             arrival_iata = segment['arrival']["iataCode"]
             segment_name = departure_iata + " -> " + arrival_iata
-            segment_dict[segment_name] = [departure_iata, 
-                                          segment['departure']["at"], 
-                                          arrival_iata, 
+            segment_dict[segment_name] = [departure_iata,
+                                          segment['departure']["at"],
+                                          arrival_iata,
                                           segment['arrival']["at"]]
-            print(segment_name + "\n\tdepart on: " + 
+            print(segment_name + "\n\tdepart on: " +
                   flights_list[count - 1][str(count)][segment_name][1][:10] +
                   " Time: " +
                   flights_list[count - 1][str(count)][segment_name][1][11:])
@@ -204,7 +204,8 @@ validate(date)
 flights_list = []
 
 # call function for POST request to get list of flights
-flights_response = get_flights_request(head, departure_airport_iata, arrival_airport_iata, date)
+flights_response = get_flights_request(head, departure_airport_iata,
+                                       arrival_airport_iata, date)
 
 # display list of available flights
 print("Here are flights from " + departure_city + " to " + arrival_city + ": ")
