@@ -280,8 +280,7 @@ for key in day_forecast_info['day']:
     val = str(key) + " : " + str(day_forecast_info['day'][key])
     departure_forecast.insert(count, val)
     if key == "condition":
-        val = str(key) +
-            " : " +
+        val = str(key) + " : " +
             str(day_forecast_info['day']["condition"]["text"])
         departure_forecast.insert(count, val)
     # print(departure_forecast[count])
@@ -302,9 +301,9 @@ for key in day2_forecast_info['day']:
     val = str(key) + " : " + str(day2_forecast_info['day'][key])
     arrival_forecast.insert(count, val)
     if key == "condition":
-        val = str(key) +
-            " : " +
-            str(day2_forecast_info['day']["condition"]["text"])
+        val = str(key) + " : " + str(day2_forecast_info['day']
+                                                       ["condition"]
+                                                       ["text"])
         arrival_forecast.insert(count, val)
     # print(departure_forecast[count])
     count += 1
@@ -327,8 +326,8 @@ def create_database(forecast_info_dict):
                        if_exists='replace',
                        index=False)
     query_result = engine.execute(
-                                 "SELECT * FROM forecast_info_dict;")
-                                 .fetchall()
+                                "SELECT * FROM forecast_info_dict;")
+                                .fetchall()
 
     return query_result
 
