@@ -281,8 +281,8 @@ for key in day_forecast_info['day']:
     departure_forecast.insert(count, val)
     if key == "condition":
         val = str(key) +
-                " : " +
-                str(day_forecast_info['day']["condition"]["text"])
+            " : " +
+            str(day_forecast_info['day']["condition"]["text"])
         departure_forecast.insert(count, val)
     # print(departure_forecast[count])
     count += 1
@@ -303,8 +303,8 @@ for key in day2_forecast_info['day']:
     arrival_forecast.insert(count, val)
     if key == "condition":
         val = str(key) +
-              " : " +
-              str(day2_forecast_info['day']["condition"]["text"])
+            " : " +
+            str(day2_forecast_info['day']["condition"]["text"])
         arrival_forecast.insert(count, val)
     # print(departure_forecast[count])
     count += 1
