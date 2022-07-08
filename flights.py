@@ -14,11 +14,11 @@ API_KEY = os.environ.get('AVIATIONSTACK_API_KEY')
 def auth_amadeus():
     AUTH_URL = 'https://test.api.amadeus.com/v1/security/oauth2/token'
     auth_response = requests.post(AUTH_URL, {
-                                            'grant_type': 'client_credentials'
-                                            , 'client_id':
-                                             os.environ.get('AMADEUS_CLIENT_ID'
-                                             ), 'client_secret':
-                                             os.environ.get(
+                                            'grant_type': 'client_credentials',
+                                            'client_id':
+                                            os.environ.get('AMADEUS_CLIENT_ID'
+                                            ), 'client_secret':
+                                            os.environ.get(
                                                  'AMADEUS_CLIENT_SECRET')}
                                   )
     auth_response_data = auth_response.json()
@@ -87,16 +87,16 @@ def validate(date_text):
 # POST request for flights FUNCTION
 
 
-def get_flights_request(headers, departure_airport_iata, 
+def get_flights_request(headers, departure_airport_iata,
                         arrival_airport_iata, date):
     BASE_URL = 'https://test.api.amadeus.com/v1/shopping/availability/'\
     'flight-availabilities'
     data = {
             "originDestinations": [{"id": "1",
-                                    "originLocationCode": departure_airport_iata,
-                                    "destinationLocationCode": arrival_airport_iata,
-                                    "departureDateTime": {"date": date,
-                                                          "time": "21:15:00"}}],
+                                    "originLocationCode": departure_airport_iata
+                                    ,"destinationLocationCode": 
+                                    arrival_airport_iata, "departureDateTime": 
+                                    {"date": date, "time": "21:15:00"}}],
             "travelers": [{"id": "1", "travelerType": "ADULT"}],
             "sources": ["GDS"]}
     auth_response = requests.post(BASE_URL, headers=headers, json=data)
